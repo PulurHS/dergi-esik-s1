@@ -573,7 +573,8 @@ function layoutContent(){
   const pages=[],starts={};
   for(const art of MAG.articles){
     const state={pageHTML:buildHeader(art),pages,articleId:art.id}; starts[art.id]=pages.length+1;
-    art.body.forEach((blk,bi)=>{ const isLede=bi===0&&blk.t==='p';
+    const firstParaIdx=art.body.findIndex(b=>b.t==='p');
+    art.body.forEach((blk,bi)=>{ const isLede=bi===firstParaIdx;
       if(blk.t==='p') placeParagraph(state,blk.x,isLede);
       else if(blk.t==='list') placeList(state,blk);
       else if(blk.t==='img'){ if(state.pageHTML.trim()!==''){ pages.push({articleId:art.id,html:state.pageHTML}); state.pageHTML=''; } pages.push({articleId:art.id,image:true,src:(MAG.images[blk.id-1]||'')}); }
